@@ -16,6 +16,6 @@ What do we need for presentation?
  
 5  Code presentation + presentation slides per candidate should not exceed 5 mins
 
-Objective: Develop a real-time log monitoring that stores logs in an RDBMS, and visualizes log data trends on a Grafana dashboard.
-Technologies: kubernetes, 
+Objective: Develop a real-time log monitoring that stores logs in an RDBMS, Deploy a DB with Ansible and visualizes log data trends on a Grafana dashboard.
+Technologies: shell, kubectl, mysql, Ansible, Grafana 
 
