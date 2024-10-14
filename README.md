@@ -13,3 +13,10 @@ What do we need for presentation?
 4 Project should be a bit robust
  
 5  Code presentation + presentation slides per candidate should not exceed 5 mins
+
+
+Problem Statement: traditional logging mechanisms often lack efficient, centralized storage and real-time visualization
+Objective: Develop a real-time log monitoring that stores logs in an RDBMS, and visualizes log data trends on a Grafana dashboard. 
+ 
+
+ 
