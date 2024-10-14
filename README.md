@@ -1,5 +1,3 @@
-# Logfile Monitoring and Visualization
-
 What do we need for presentation?
  
 1 A Solid modular structure project statement where candidates will be working with each other using modular approach
@@ -15,7 +13,3 @@ What do we need for presentation?
 4 Project should be a bit robust
  
 5  Code presentation + presentation slides per candidate should not exceed 5 mins
-
-Objective: Develop a real-time log monitoring that stores logs in an RDBMS, Deploy a DB with Ansible and visualizes log data trends on a Grafana dashboard.
-Technologies: shell, kubectl, mysql, Ansible, Grafana 
-
