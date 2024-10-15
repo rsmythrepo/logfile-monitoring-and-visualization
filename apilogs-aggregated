@@ -1,9 +1,11 @@
-heartbeats= 308
-NotHeartBeats= 648
-GOOG= 0
+
+heartbeats= 302
+NotHeartBeats= 683
+GOOG= 15
 TSLA= 0
-BUY= 0
+BUY= 14
 SELL= 0
-UniqueStocks= 0
+UniqueStocks= 2
 EachStockAmount=
+8 "stock": "GOOD" 6 "stock": "GOOG"
 
