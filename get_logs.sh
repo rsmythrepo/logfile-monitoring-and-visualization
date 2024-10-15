@@ -8,8 +8,8 @@ heartbeats=$(grep -c '"MsgType": "Heartbeat"' "$logfile")
 NotHeartBeats=$(grep -vc '"MsgType": "Heartbeat"' "$logfile")
 
 # Stock information
-goog=$(grep -i "GOOG" "$logfile" | wc -l)
-tesla=$(grep -i "TSLA" "$logfile" | wc -l)
+goog=$(grep -i '"stock": "GOOG"' "$logfile" | wc -l)
+tesla=$(grep -i '"stock": "TSLA"' "$logfile" | wc -l)
 buy=$(grep -o '"side": "buy"' "$logfile" | wc -l)
 sell=$(grep -i "sell" "$logfile" | wc -l)
 uniqstocks=$(grep -iEo '"stock": "[a-z]{1,}"' "$logfile" | sort | uniq | wc -l)
