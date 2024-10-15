@@ -2,7 +2,7 @@
 
 # Set MySQL credentials
 DB_CONTAINER_NAME="mysql9_project3"
-DB_NAME="fix_data"
+DB_NAME="system_logs"
 DB_USER="root"
 DB_PASSWORD="root"
 
@@ -33,8 +33,7 @@ CREATE TABLE FIX_Messages (
     TransactTime DATETIME,
     Side VARCHAR(5),
     Price DECIMAL(10,2),
-    SenderSubID VARCHAR(20),
-    ClOrdID VARCHAR(30)
+    SenderSubID VARCHAR(20)
 );
 
 CREATE TABLE HTTP_Logs (
@@ -70,3 +69,17 @@ CREATE TABLE FIX_HTTP_Link (
 );
 EOF
 
+
+# command to show databases 
+SQL_show_databases="show databases;"
+
+# Execute SQL command in MySQL container
+docker exec -i "$DB_CONTAINER_NAME" mysql -SQL_COMMAND="desc FIX_Messages;  desc HTTP_Logs; desc Heartbeat_Messages; desc FIX_HTTP_Link;"
+
+# Execute SQL command in MySQL container
+docker exec -i "$DB_CONTAINER_NAME" mysql -u "$DB_USER" -p"$DB_PASSWORD" -e "$SQL_show_databases"u "$DB_USER" -p"$DB_PASSWORD" -e "$SQL_show_databases"
+
+SQL_show_tables="use system_logs; desc FIX_Messages;"
+
+# Execute SQL command in MySQL container
+docker exec -i "$DB_CONTAINER_NAME" mysql -u "$DB_USER" -p"$DB_PASSWORD" -e "$SQL_show_tables"
