@@ -12,14 +12,18 @@ docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" <<EOF
 CREATE DATABASE IF NOT EXISTS $DB_NAME;
 USE $DB_NAME;
 
--- Drop existing tables
-DROP TABLE IF EXISTS FIX_Messages;
-DROP TABLE IF EXISTS HTTP_Logs;
-DROP TABLE IF EXISTS Heartbeat_Messages;
-DROP TABLE IF EXISTS FIX_HTTP_Link;
+-- Drop existing tables, if they exist, and drop foreign key constraints if necessary
+SET FOREIGN_KEY_CHECKS = 0; -- Disable foreign key checks
+
+DROP TABLE IF EXISTS Message_HTTP_Link;
+DROP TABLE IF EXISTS Heartbeat_Message;
+DROP TABLE IF EXISTS HTTP_Log;
+DROP TABLE IF EXISTS Order_Message;
+
+SET FOREIGN_KEY_CHECKS = 1; -- Re-enable foreign key checks
 
 -- Create tables
-CREATE TABLE FIX_Messages (
+CREATE TABLE Order_Message (
     fix_id INT AUTO_INCREMENT PRIMARY KEY,
     fix_version VARCHAR(10),
     MsgType VARCHAR(20),
@@ -37,7 +41,7 @@ CREATE TABLE FIX_Messages (
     ClOrdID VARCHAR(30)
 );
 
-CREATE TABLE HTTP_Logs (
+CREATE TABLE HTTP_Log (
     http_id INT AUTO_INCREMENT PRIMARY KEY,
     Timestamp DATETIME,
     IP_Address VARCHAR(20),
@@ -49,7 +53,7 @@ CREATE TABLE HTTP_Logs (
     Stock_Symbol VARCHAR(10)
 );
 
-CREATE TABLE Heartbeat_Messages (
+CREATE TABLE Heartbeat_Message (
     fix_id INT AUTO_INCREMENT PRIMARY KEY,
     fix_version VARCHAR(10),
     MsgType VARCHAR(20),
@@ -61,12 +65,14 @@ CREATE TABLE Heartbeat_Messages (
     CheckSum VARCHAR(10)
 );
 
-CREATE TABLE FIX_HTTP_Link (
+CREATE TABLE Message_HTTP_Link (
     link_id INT AUTO_INCREMENT PRIMARY KEY,
     fix_id INT,
     http_id INT,
-    FOREIGN KEY(fix_id) REFERENCES FIX_Messages(fix_id),
-    FOREIGN KEY(http_id) REFERENCES HTTP_Logs(http_id)
+    FOREIGN KEY(fix_id) REFERENCES Order_Message(fix_id) ON DELETE CASCADE,
+    FOREIGN KEY(http_id) REFERENCES HTTP_Log(http_id) ON DELETE CASCADE
 );
 EOF
+
+echo "MySQL setup complete."
 
