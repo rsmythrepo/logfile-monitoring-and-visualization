@@ -1,6 +1,4 @@
-logfile="logfile.txt"
-logfiletest="logtest3.txt"
-kubectl logs deploy/orderbookapi -n c402-team01-dev --since=2h > "$logfile"
+#!/bin/bash
 
 # Define output CSV files
 messages_output="messages_output.csv"
@@ -34,7 +32,7 @@ Status_Code=""
 Response_Time=""
 
 # Parsing and inserting data
-while IFS= read -r line
+kubectl logs deploy/orderbookapi -n c402-team01-dev --since=1h | while IFS= read -r line
 do
     	# Parse FIX Message
     	if [[ $line =~ ^\"8=FIX([0-9]+\.[0-9]+).* ]]; then
@@ -75,4 +73,4 @@ do
 	fi 
 
 
-done < "$logfiletest"
+done 
