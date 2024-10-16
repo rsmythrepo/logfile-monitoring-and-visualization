@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set MySQL credentials
-DB_CONTAINER_NAME="mysql9_project3"
+DB_CONTAINER_NAME="mysql9_project4"
 DB_NAME="system_logs"
 DB_USER="root"
 DB_PASSWORD="root"
@@ -13,10 +13,10 @@ CREATE DATABASE IF NOT EXISTS $DB_NAME;
 USE $DB_NAME;
 
 -- Drop existing tables
+DROP TABLE IF EXISTS FIX_HTTP_Link;
 DROP TABLE IF EXISTS FIX_Messages;
 DROP TABLE IF EXISTS HTTP_Logs;
 DROP TABLE IF EXISTS Heartbeat_Messages;
-DROP TABLE IF EXISTS FIX_HTTP_Link;
 
 -- Create tables
 CREATE TABLE FIX_Messages (
@@ -69,17 +69,11 @@ CREATE TABLE FIX_HTTP_Link (
 );
 EOF
 
+# Show databases in the MySQL container
+docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "SHOW DATABASES;"
 
-# command to show databases 
-SQL_show_databases="show databases;"
-
-# Execute SQL command in MySQL container
-docker exec -i "$DB_CONTAINER_NAME" mysql -SQL_COMMAND="desc FIX_Messages;  desc HTTP_Logs; desc Heartbeat_Messages; desc FIX_HTTP_Link;"
-
-# Execute SQL command in MySQL container
-docker exec -i "$DB_CONTAINER_NAME" mysql -u "$DB_USER" -p"$DB_PASSWORD" -e "$SQL_show_databases"u "$DB_USER" -p"$DB_PASSWORD" -e "$SQL_show_databases"
-
-SQL_show_tables="use system_logs; desc FIX_Messages;"
-
-# Execute SQL command in MySQL container
-docker exec -i "$DB_CONTAINER_NAME" mysql -u "$DB_USER" -p"$DB_PASSWORD" -e "$SQL_show_tables"
+# Show table descriptions individually
+docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "USE $DB_NAME; DESC FIX_Messages;"
+docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "USE $DB_NAME; DESC HTTP_Logs;"
+docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "USE $DB_NAME; DESC Heartbeat_Messages;"
+docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "USE $DB_NAME; DESC FIX_HTTP_Link;"
