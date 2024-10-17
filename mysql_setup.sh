@@ -30,7 +30,7 @@ CREATE TABLE HTTP_Log (
     Port INT,
     HTTP_Method VARCHAR(10),
     Path VARCHAR(100),
-    Endpoint VARCHAR(10),
+    Endpoint VARCHAR(100),
     Status_Code VARCHAR(10),
     Response_Time DECIMAL(10,8),
     Stock_Symbol VARCHAR(10),
