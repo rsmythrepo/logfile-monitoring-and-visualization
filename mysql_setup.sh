@@ -2,7 +2,7 @@
 
 # Set MySQL credentials
 DB_CONTAINER_NAME="mysql9_project3"
-DB_NAME="fix_data"
+DB_NAME="fixdata"
 DB_USER="root"
 DB_PASSWORD="root"
 

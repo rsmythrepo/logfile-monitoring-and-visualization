@@ -2,7 +2,7 @@
 
 # Set MySQL credentials
 DB_CONTAINER_NAME="mysql9_project3"
-DB_NAME="fix_data"
+DB_NAME="fixdata"
 DB_USER="root"
 DB_PASSWORD="root"
 
@@ -71,12 +71,17 @@ do
         # Insert or update Heartbeat_Message table
         docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" <<EOF
         USE $DB_NAME;
-        INSERT INTO Heartbeat_Message (Heartbeat_id, fix_id, Message, Timestamp)
-        VALUES ($id, $id, CONCAT_WS('|', $fix_version, $msgtype, $msgseqnum, $sendercompid, $targetcompid, $heartbtint, $checksum), $sendingtime)
+        INSERT INTO Heartbeat_Message (Heartbeat_id, fix_version, MsgType, MsgSeqNum, SenderCompID, TargetCompID, SendingTime, HeartBtInt, CheckSum)
+        VALUES ($id, $fix_version, $msgtype, $msgseqnum, $sendercompid, $targetcompid, $sendingtime, $heartbtint, $checksum)
         ON DUPLICATE KEY UPDATE
-        fix_id = VALUES(fix_id),
-        Message = VALUES(Message),
-        Timestamp = VALUES(Timestamp);
+        fix_version = VALUES(fix_version),
+        MsgType = VALUES(MsgType),
+        MsgSeqNum = VALUES(MsgSeqNum),
+        SenderCompID = VALUES(SenderCompID),
+        TargetCompID = VALUES(TargetCompID),
+        SendingTime = VALUES(SendingTime),
+        HeartBtInt = VALUES(HeartBtInt),
+        CheckSum = VALUES(CheckSum);
 EOF
     fi
 done < messages_output.csv
@@ -115,3 +120,4 @@ EOF
 done < orders_data.csv
 
 echo "Data insertion/update complete."
+
