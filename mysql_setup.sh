@@ -1,87 +1,75 @@
 #!/bin/bash
- 
+
 # Set MySQL credentials
 DB_CONTAINER_NAME="mysql9_project3"
 DB_NAME="fix_data"
 DB_USER="root"
 DB_PASSWORD="root"
- 
+
 # Prepare MySQL database and tables in the container
 docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" <<EOF
 -- Create the database if it does not exist
 CREATE DATABASE IF NOT EXISTS $DB_NAME;
 USE $DB_NAME;
- 
--- Drop existing tables, if they exist, and drop foreign key constraints if necessary
-SET FOREIGN_KEY_CHECKS = 0; -- Disable foreign key checks
- 
-DROP TABLE IF EXISTS Message_HTTP_Link;
-DROP TABLE IF EXISTS Heartbeat_Message;
+
+-- Disable foreign key checks to drop existing tables
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Drop existing tables if they exist
+DROP TABLE IF EXISTS \`Order\`;
 DROP TABLE IF EXISTS HTTP_Log;
-DROP TABLE IF EXISTS Order_Message;
- 
-SET FOREIGN_KEY_CHECKS = 1; -- Re-enable foreign key checks
- 
--- Create tables
-CREATE TABLE Order_Message (
-    fix_id INT AUTO_INCREMENT PRIMARY KEY,
-    fix_version VARCHAR(10),
-    MsgType VARCHAR(20),
-    MsgSeqNum INT,
-    SenderCompID VARCHAR(20),
-    TargetCompID VARCHAR(20),
-    SendingTime DATETIME,
-    CheckSum VARCHAR(10),
-    Stock_Symbol VARCHAR(10),
-    OrderQty INT,
-    TransactTime DATETIME,
-    Side VARCHAR(5),
-    Price DECIMAL(10,2),
-    SenderSubID VARCHAR(20),
-    ClOrdID VARCHAR(30)
-);
- 
+DROP TABLE IF EXISTS Heartbeat_Message;
+
+-- Re-enable foreign key checks
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- Create 'HTTP_Log' table first
 CREATE TABLE HTTP_Log (
-    http_id INT AUTO_INCREMENT PRIMARY KEY,
-    Timestamp DATETIME,
+    HTTP_id INT AUTO_INCREMENT PRIMARY KEY,
     IP_Address VARCHAR(20),
     Port INT,
     HTTP_Method VARCHAR(10),
     Path VARCHAR(100),
+    Endpoint VARCHAR(10),
     Status_Code VARCHAR(10),
     Response_Time DECIMAL(10,8),
-    Stock_Symbol VARCHAR(10)
+    Stock_Symbol VARCHAR(10),
+    Timestamp DATETIME
 );
- 
+
+-- Create 'Heartbeat_Message' table with proper columns
 CREATE TABLE Heartbeat_Message (
-    fix_id INT AUTO_INCREMENT PRIMARY KEY,
-    fix_version VARCHAR(10),
-    MsgType VARCHAR(20),
-    MsgSeqNum INT,
-    SenderCompID VARCHAR(20),
-    TargetCompID VARCHAR(20),
-    SendingTime DATETIME,
-    HeartBtInt INT,
-    CheckSum VARCHAR(10)
-);
- 
-CREATE TABLE Message_HTTP_Link (
-    link_id INT AUTO_INCREMENT PRIMARY KEY,
+    Heartbeat_id INT AUTO_INCREMENT PRIMARY KEY,
     fix_id INT,
     http_id INT,
-    FOREIGN KEY(fix_id) REFERENCES Order_Message(fix_id) ON DELETE CASCADE,
-    FOREIGN KEY(http_id) REFERENCES HTTP_Log(http_id) ON DELETE CASCADE
+    -- Add any other columns you need for Heartbeat_Message here
+    -- For example:
+    Message TEXT,
+    Timestamp DATETIME
 );
+
+-- Create 'Order' table which references 'HTTP_Log'
+CREATE TABLE \`Order\` (
+    Order_id INT AUTO_INCREMENT PRIMARY KEY,
+    http_id INT,
+    TransactTime DATETIME,
+    Side VARCHAR(5),
+    User_ID VARCHAR(20),
+    FOREIGN KEY (http_id) REFERENCES HTTP_Log(HTTP_id)
+);
+
 EOF
- 
+
 echo "MySQL setup complete."
+
 
 # Show databases in the MySQL container
 docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "SHOW DATABASES;"
 
 # Show table descriptions individually
-docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "USE $DB_NAME; DESC Order_Messages;"
+docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "USE $DB_NAME; DESC \`Order\`;"
 docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "USE $DB_NAME; DESC HTTP_Log;"
 docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "USE $DB_NAME; DESC Heartbeat_Message;"
 docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -e "USE $DB_NAME; DESC Message_HTTP_Link;"
+
 
