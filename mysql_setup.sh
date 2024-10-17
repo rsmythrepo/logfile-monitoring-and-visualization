@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS Heartbeat_Message;
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS = 1;
 
--- Create 'HTTP_Log' table first
+-- Create 'HTTP_Log' table
 CREATE TABLE HTTP_Log (
     HTTP_id INT AUTO_INCREMENT PRIMARY KEY,
     IP_Address VARCHAR(20),
@@ -37,18 +37,20 @@ CREATE TABLE HTTP_Log (
     Timestamp DATETIME
 );
 
--- Create 'Heartbeat_Message' table with proper columns
+-- Create 'Heartbeat_Message' table
 CREATE TABLE Heartbeat_Message (
     Heartbeat_id INT AUTO_INCREMENT PRIMARY KEY,
-    fix_id INT,
-    http_id INT,
-    -- Add any other columns you need for Heartbeat_Message here
-    -- For example:
-    Message TEXT,
-    Timestamp DATETIME
+    fix_version VARCHAR(10),
+    MsgType VARCHAR(20),
+    MsgSeqNum INT,
+    SenderCompID VARCHAR(20),
+    TargetCompID VARCHAR(20),
+    SendingTime DATETIME,
+    HeartBtInt INT,
+    CheckSum VARCHAR(10)
 );
 
--- Create 'Order' table which references 'HTTP_Log'
+-- Create 'Order' table, referencing 'HTTP_Log'
 CREATE TABLE \`Order\` (
     Order_id INT AUTO_INCREMENT PRIMARY KEY,
     http_id INT,
@@ -61,6 +63,7 @@ CREATE TABLE \`Order\` (
 EOF
 
 echo "MySQL setup complete."
+
 
 
 # Show databases in the MySQL container
