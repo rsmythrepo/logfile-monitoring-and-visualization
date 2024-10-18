@@ -25,22 +25,22 @@ Objective: Develop a real-time log monitoring that stores logs in an RDBMS, and 
   <tr>
     <td align="center">
       <a href="https://github.com/rsmythrepo">
-        <img src="https://avatars.githubusercontent.com/u/152279048?v=4" width="100px;" alt="Raphaelle Smyth"/><br />
+        <img src="https://github.com/rsmythrepo.png" width="100px;" alt="Raphaelle Smyth"/><br />
         <sub><b>Raphaelle Smyth</b></sub>
     </td>
     <td align="center">
       <a href="https://github.com/caraticus12">
-        <img src="https://avatars.githubusercontent.com/u/106646716?v=4" width="100px;" alt="Daniel Hewitt"/><br />
+        <img src="https://github.com/caraticus12.png" width="100px;" alt="Daniel Hewitt"/><br />
         <sub><b>Daniel Hewitt</b></sub>
     </td>
     <td align="center">
-      <a href="https://github.com/[correct_username_for_arina]">
-        <img src="https://avatars.githubusercontent.com/u/[correct_user_id_for_arina]?v=4" width="100px;" alt="Arina Semianiuk"/><br />
+      <a href="https://github.com/ar1111na">
+        <img src="https://github.com/ar1111na.png" width="100px;" alt="Arina Semianiuk"/><br />
         <sub><b>Arina Semianiuk</b></sub>
     </td>
     <td align="center">
-      <a href="https://github.com/[correct_username_for_nyasha]">
-        <img src="https://avatars.githubusercontent.com/u/[correct_user_id_for_nyasha]?v=4" width="100px;" alt="Nyasha Mangwanda"/><br />
+      <a href="https://github.com/Nyaah12">
+        <img src="https://github.com/Nyaah12.png" width="100px;" alt="Nyasha Mangwanda"/><br />
         <sub><b>Nyasha Mangwanda</b></sub>
     </td>
   </tr>
