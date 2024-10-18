@@ -3,15 +3,17 @@
 #### Problem Statement
 Traditional logging mechanisms often lack efficient, centralized storage and real-time visualization
 
-Objective: Develop a real-time log monitoring that stores logs in an RDBMS, and visualizes log data trends on a Grafana dashboard. 
+#### Objective
+Develop a real-time log monitoring that stores logs in an RDBMS, and visualizes log data trends on a Grafana dashboard. 
 
-Features:
+#### Features
 - Automated log parsing
 - DDL & DML
 - Scheduled script running
 - Real-Time Log Monitoring Visualizations
 
-Technologies: Linux, Bash Scripting, mySQL, SQL, Grafana, crontab
+#### Technologies
+Linux, Bash Scripting, mySQL, SQL, Grafana, crontab
 
 ### Contributors:
 <table>
