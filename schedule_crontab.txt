@@ -1,0 +1,4 @@
+# Scheduled Jobs
+
+# Run the scripts consecutively every 10 minute
+*/10 * * * * cd /home/ec2-user/projects/project2/logfile-monitoring-and-visualization && ./get_logs.sh.sh && ./generate_data.sh && ./mysql_setup.sh && ./inserting_data.sh
