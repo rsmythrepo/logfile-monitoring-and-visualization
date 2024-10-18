@@ -34,13 +34,13 @@ Objective: Develop a real-time log monitoring that stores logs in an RDBMS, and 
         <sub><b>Daniel Hewitt</b></sub>
     </td>
     <td align="center">
-      <a href="https://github.com/ar1111na">
-        <img src="https://avatars.githubusercontent.com/u/155852722?v=4" width="100px;" alt="Arina Semianiuk"/><br />
+      <a href="https://github.com/[correct_username_for_arina]">
+        <img src="https://avatars.githubusercontent.com/u/[correct_user_id_for_arina]?v=4" width="100px;" alt="Arina Semianiuk"/><br />
         <sub><b>Arina Semianiuk</b></sub>
     </td>
     <td align="center">
-      <a href="https://github.com/Nyaah12">
-        <img src="https://avatars.githubusercontent.com/u/155852722?v=4" width="100px;" alt="Nyasha Mangwanda"/><br />
+      <a href="https://github.com/[correct_username_for_nyasha]">
+        <img src="https://avatars.githubusercontent.com/u/[correct_user_id_for_nyasha]?v=4" width="100px;" alt="Nyasha Mangwanda"/><br />
         <sub><b>Nyasha Mangwanda</b></sub>
     </td>
   </tr>
