@@ -35,19 +35,19 @@ do
 
         # Insert or update HTTP_Log table
         docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" <<EOF
-        USE $DB_NAME;
-        INSERT INTO HTTP_Log (HTTP_id, IP_Address, Port, HTTP_Method, Path, Endpoint, Status_Code, Response_Time, Stock_Symbol, Timestamp)
-        VALUES ($id, $ip_address, $port, $http_method, $path, $endpoint, $status_code, $response_time, $stock, $timestamp)
-        ON DUPLICATE KEY UPDATE
-        IP_Address = VALUES(IP_Address),
-        Port = VALUES(Port),
-        HTTP_Method = VALUES(HTTP_Method),
-        Path = VALUES(Path),
-        Endpoint = VALUES(Endpoint),
-        Status_Code = VALUES(Status_Code),
-        Response_Time = VALUES(Response_Time),
-        Stock_Symbol = VALUES(Stock_Symbol),
-        Timestamp = VALUES(Timestamp);
+USE $DB_NAME;
+INSERT INTO HTTP_Log (HTTP_id, IP_Address, Port, HTTP_Method, Path, Endpoint, Status_Code, Response_Time, Stock_Symbol, Timestamp)
+VALUES ($id, $ip_address, $port, $http_method, $path, $endpoint, $status_code, $response_time, $stock, $timestamp)
+ON DUPLICATE KEY UPDATE
+    IP_Address = VALUES(IP_Address),
+    Port = VALUES(Port),
+    HTTP_Method = VALUES(HTTP_Method),
+    Path = VALUES(Path),
+    Endpoint = VALUES(Endpoint),
+    Status_Code = VALUES(Status_Code),
+    Response_Time = VALUES(Response_Time),
+    Stock_Symbol = VALUES(Stock_Symbol),
+    Timestamp = VALUES(Timestamp);
 EOF
     fi
 done < http_logs_output.csv
@@ -70,24 +70,26 @@ do
 
         # Insert or update Heartbeat_Message table
         docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" <<EOF
-        USE $DB_NAME;
-        INSERT INTO Heartbeat_Message (Heartbeat_id, fix_version, MsgType, MsgSeqNum, SenderCompID, TargetCompID, SendingTime, HeartBtInt, CheckSum)
-        VALUES ($id, $fix_version, $msgtype, $msgseqnum, $sendercompid, $targetcompid, $sendingtime, $heartbtint, $checksum)
-        ON DUPLICATE KEY UPDATE
-        fix_version = VALUES(fix_version),
-        MsgType = VALUES(MsgType),
-        MsgSeqNum = VALUES(MsgSeqNum),
-        SenderCompID = VALUES(SenderCompID),
-        TargetCompID = VALUES(TargetCompID),
-        SendingTime = VALUES(SendingTime),
-        HeartBtInt = VALUES(HeartBtInt),
-        CheckSum = VALUES(CheckSum);
+USE $DB_NAME;
+INSERT INTO Heartbeat_Message (Heartbeat_id, fix_version, MsgType, MsgSeqNum, SenderCompID, TargetCompID, SendingTime, HeartBtInt, CheckSum)
+VALUES ($id, $fix_version, $msgtype, $msgseqnum, $sendercompid, $targetcompid, $sendingtime, $heartbtint, $checksum)
+ON DUPLICATE KEY UPDATE
+    fix_version = VALUES(fix_version),
+    MsgType = VALUES(MsgType),
+    MsgSeqNum = VALUES(MsgSeqNum),
+    SenderCompID = VALUES(SenderCompID),
+    TargetCompID = VALUES(TargetCompID),
+    SendingTime = VALUES(SendingTime),
+    HeartBtInt = VALUES(HeartBtInt),
+    CheckSum = VALUES(CheckSum);
 EOF
     fi
 done < messages_output.csv
 
 # Insert or update data from orders_data.csv
 echo "Inserting/updating data from orders_data.csv..."
+counter=0  # Initialize a counter for rows processed
+
 while IFS=',' read -r order_id http_id transacttime side user_id
 do
     # Skip the header row
@@ -98,26 +100,19 @@ do
         side=$(escape_sql "$side")
         user_id=$(escape_sql "$user_id")
 
-        # Check if the referenced HTTP_id exists in the HTTP_Log table
-        http_id_exists=$(docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" -N -e "SELECT COUNT(*) FROM $DB_NAME.HTTP_Log WHERE HTTP_id = $http_id;")
-
-        if [ "$http_id_exists" -eq "1" ]; then
             # Insert or update Order table
             docker exec -i "$DB_CONTAINER_NAME" mysql -u"$DB_USER" -p"$DB_PASSWORD" <<EOF
-            USE $DB_NAME;
-            INSERT INTO \`Order\` (Order_id, http_id, TransactTime, Side, User_ID)
-            VALUES ($order_id, $http_id, $transacttime, $side, $user_id)
-            ON DUPLICATE KEY UPDATE
-            http_id = VALUES(http_id),
-            TransactTime = VALUES(TransactTime),
-            Side = VALUES(Side),
-            User_ID = VALUES(User_ID);
+USE $DB_NAME;
+INSERT INTO \`Order\` (Order_id, http_id, TransactTime, Side, User_ID)
+VALUES ($order_id, $http_id, $transacttime, $side, $user_id)
+ON DUPLICATE KEY UPDATE
+    http_id = VALUES(http_id),
+    TransactTime = VALUES(TransactTime),
+    Side = VALUES(Side),
+    User_ID = VALUES(User_ID);
 EOF
-        else
-            echo "Warning: Skipping Order with Order_id $order_id because HTTP_id $http_id does not exist in HTTP_Log table."
-        fi
+            #echo "Inserted/Updated Order_id: $order_id"
     fi
 done < orders_data.csv
 
-echo "Data insertion/update complete."
-
+echo "Data insertion/update complete. Processed $counter orders."
