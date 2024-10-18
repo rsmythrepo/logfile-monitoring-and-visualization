@@ -1,6 +1,7 @@
 ## Real-Time Log Monitoring Visualizations 
 
-Problem Statement: Traditional logging mechanisms often lack efficient, centralized storage and real-time visualization
+#### Problem Statement
+Traditional logging mechanisms often lack efficient, centralized storage and real-time visualization
 
 Objective: Develop a real-time log monitoring that stores logs in an RDBMS, and visualizes log data trends on a Grafana dashboard. 
 
